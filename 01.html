@@ -16,23 +16,34 @@
         canvas.width = document.documentElement.clientWidth
         canvas.height = document.documentElement.clientHeight
         let ctx = canvas.getContext("2d");
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = 'none'
+        ctx.lineWidth = 10
+        ctx.lineCap = "round"
+
+        function drawline(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+        }
+
 
         let painting = false/*画画还没有开始，则是以下的样式*/
 
 
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = 'none'
 
-        canvas.onmousedown = () => {
+
+        canvas.onmousedown = (e) => {
             painting = true
+            last = [e.clientX, e.clientY]
         }
         //当鼠标按下且移动的时候画画开始，则有true结果下的效果，否则没有效果
         canvas.onmousemove = (e) => {
             if (painting === true) {
-                ctx.beginPath();
-                ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.fill();
+                drawline(last[0], last[1], e.clientX, e.clientY)
+                last = [e.clientX, e.clientY]
             } else {
                 console.log('什么都不做')
             }
